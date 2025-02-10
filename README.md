@@ -77,13 +77,13 @@ graph TD
 
 <div align="center">
 
-| Module | Preview | Key Features |
-|--------|---------|--------------|
-| **Home Dashboard** | <img src="screenshots/home.png" width="300" style="border-radius: 5px"> | Quick access to emergency features |
-| **Symptom Checker** | <img src="screenshots/symptom.png" width="300" style="border-radius: 5px"> | AI-powered health assessment |
-| **Hospital Locator** | <img src="screenshots/hospital.png" width="300" style="border-radius: 5px"> | Real-time hospital mapping |
-| **Emergency Portal** | <img src="screenshots/emergency.png" width="300" style="border-radius: 5px"> | One-tap SOS activation |
-| **First Aid Guide** | <img src="screenshots/firstaid.png" width="300" style="border-radius: 5px"> | Interactive medical guidance |
+| Module | Preview | 
+|--------|---------|
+| **Home Dashboard** | <img src="screenshots/home.png" width="300" style="border-radius: 5px"> | 
+| **Symptom Checker** | <img src="screenshots/symptom.png" width="300" style="border-radius: 5px"> |
+| **Hospital Locator** | <img src="screenshots/hospital.png" width="300" style="border-radius: 5px"> | 
+| **Emergency Portal** | <img src="screenshots/emergency.png" width="300" style="border-radius: 5px"> |
+| **First Aid Guide** | <img src="screenshots/firstaid.png" width="300" style="border-radius: 5px"> | 
 
 </div>
 
