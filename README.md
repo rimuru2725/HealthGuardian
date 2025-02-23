@@ -27,7 +27,6 @@ HealthGuardian is your trusted companion in medical emergencies, providing insta
 | 🏥 **Hospital Finder** | Real-time nearest hospital locator | < 5 seconds |
 | 🩺 **Symptom Checker** | AI-powered preliminary diagnosis | < 1 minute |
 | 🚑 **Emergency Guide** | Interactive first-aid instructions | Instant |
-
 </div>
 
 ## 🎯 Core Capabilities
@@ -77,13 +76,20 @@ graph TD
 
 <div align="center">
 
-| Module | Preview | 
-|--------|---------|
-| **Home Dashboard** | <img src="screenshots/home.png" width="300" style="border-radius: 5px"> | 
-| **Symptom Checker** | <img src="screenshots/symptom.png" width="300" style="border-radius: 5px"> |
-| **Hospital Locator** | <img src="screenshots/hospital.png" width="300" style="border-radius: 5px"> | 
-| **Emergency Portal** | <img src="screenshots/emergency.png" width="300" style="border-radius: 5px"> |
-| **First Aid Guide** | <img src="screenshots/firstaid.png" width="300" style="border-radius: 5px"> | 
+### 🏠 Home Dashboard
+<img src="screenshots/home.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+### 🔍 Symptom Checker
+<img src="screenshots/symptom.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+### 🏥 Hospital Locator
+<img src="screenshots/hospital.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+### 🚨 Emergency Portal
+<img src="screenshots/emergency.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+### 🩹 First Aid Guide
+<img src="screenshots/firstaid.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 
 </div>
 
@@ -96,7 +102,7 @@ graph TD
 | **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=flat-square&logo=bootstrap&logoColor=white) |
 | **Backend** | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white) |
 | **APIs** | ![Twilio](https://img.shields.io/badge/Twilio-F22F46?style=flat-square&logo=twilio&logoColor=white) ![OpenStreetMap](https://img.shields.io/badge/OpenStreetMap-7EBC6F?style=flat-square&logo=openstreetmap&logoColor=white) |
-| **Real-time** | ![WebSocket](https://img.shields.io/badge/WebSocket-010101?style=flat-square&logo=socket.io&logoColor=white) |
+
 
 </div>
 

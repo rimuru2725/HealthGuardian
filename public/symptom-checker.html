@@ -3,177 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Symptom Checker</title>
+    <title>Symptom Checker | HealthGuardian</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #2196F3;
             --secondary-color: #1976D2;
-            --dark-bg: #212529;
-            --card-bg: #1E1E1E;
+            --dark-bg: #0a0a0a;
+            --card-bg: #151515;
+            --nav-bg: #111111;
+            --accent-blue: #0d6efd;
+            --accent-red: #dc3545;
+            --accent-green: #198754;
         }
 
-        .nav-card {
-            transition: all 0.3s;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-            height: 90px;
-            justify-content: center;
-        }
-
-        .nav-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
-            border-color: var(--hover-color, #0d6efd);
-        }
-
-        .nav-card.home-card { --hover-color: #0d6efd; }
-        .nav-card.hospital-card { --hover-color: #dc3545; }
-        .nav-card.symptom-card { --hover-color: #198754; }
-        
-        .nav-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .nav-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 0.8rem;
-        }
-
-        /* Fix for tab text color */
-        .nav-tabs .nav-link {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-tabs .nav-link.active {
-            color: #000;
-            background-color: #fff;
-        }
-
-        .nav-tabs .nav-link:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        
         body {
             background-color: var(--dark-bg);
             color: #f8f9fa;
             min-height: 100vh;
         }
-        
-        .navbar {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+        .navbar-card {
+            background: var(--nav-bg);
+            border-radius: 20px;
+            margin: 1rem;
+            padding: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
-        
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
+
+        .nav-card {
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
             border-radius: 15px;
-            color: #fff;
+            height: 100px;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .form-control {
-            background-color: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
-            border-radius: 10px;
-        }
-        
-        .form-control:focus {
-            background-color: rgba(255,255,255,0.1);
-            border-color: var(--primary-color);
-            color: #fff;
-            box-shadow: 0 0 0 0.2rem rgba(33,150,243,0.25);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            border-radius: 10px;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        
-        .suggestions {
+
+        .nav-card::before {
+            content: '';
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            background-color: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0 0 10px 10px;
-            z-index: 1000;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--hover-color, #0d6efd);
+        }
+
+        .nav-card:hover::before {
+            opacity: 1;
+        }
+
+        .nav-card.home-card { --hover-color: var(--accent-blue); }
+        .nav-card.emergency-card { --hover-color: var(--accent-red); }
+        .nav-card.hospital-card { --hover-color: var(--accent-green); }
+
+        .nav-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .nav-card:hover .nav-icon {
+            transform: scale(1.1);
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .symptom-search {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            color: #f8f9fa;
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+
+        .symptom-search::placeholder {
+        color: #b0b0b0; /* Light color for placeholder */
+        opacity: 1; /* Ensures the color is not faded */
+        }
+
+        .symptom-search:focus {
+            background: rgba(255, 254, 254, 0.884);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(33, 150, 243, 0.1);
+        }
+
+        .suggestions {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0 0 15px 15px;
+            backdrop-filter: blur(10px);
+        }
+
         .suggestion-item {
-            padding: 8px 16px;
-            cursor: pointer;
-            color: #fff;
+            padding: 0.8rem 1rem;
+            transition: all 0.2s;
         }
-        
+
         .suggestion-item:hover {
-            background-color: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 1.5rem;
         }
-        
-        .alert {
-            background-color: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #fff;
+
+        .check-symptoms-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 15px;
+            padding: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
         }
-        
-        .alert-info {
-            background-color: rgba(33,150,243,0.1);
-            border-color: rgba(33,150,243,0.2);
+
+        .check-symptoms-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
         }
-        
-        .alert-warning {
-            background-color: rgba(255,193,7,0.1);
-            border-color: rgba(255,193,7,0.2);
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .selected-symptom {
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .selected-symptom:hover {
+            background: rgba(33, 150, 243, 0.2);
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <div class="container-fluid bg-dark py-4 mb-4">
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-3 col-sm-6">
-                <a href="index.html" class="text-decoration-none">
-                    <div class="card nav-card home-card text-center p-4">
-                        <span class="nav-badge badge bg-primary">Home</span>
-                        <i class="bi bi-house-heart-fill nav-icon text-primary"></i>
-                        <h4 class="text-white mb-2">Home</h4>
-                        <p class="text-white-50 mb-0">Return to main dashboard</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="emergency-portal.html" class="text-decoration-none">
-                    <div class="card nav-card hospital-card text-center p-4">
-                        <span class="nav-badge badge bg-danger">SOS</span>
-                        <i class="bi bi-hospital-fill nav-icon text-danger"></i>
-                        <h4 class="text-white mb-2">Emergency Portal</h4>
-                        <p class="text-white-50 mb-0">Send SOS</p>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="hospital-locator.html" class="text-decoration-none">
-                    <div class="card nav-card symptom-card text-center p-4">
-                        <span class="nav-badge badge bg-success">Nearby</span>
-                        <i class="bi bi-clipboard2-pulse-fill nav-icon text-success"></i>
-                        <h4 class="text-white mb-2">Hospital Locator</h4>
-                        <p class="text-white-50 mb-0">Find nearest medical facilities</p>
-                    </div>
-                </a>
+    <!-- Enhanced Navigation -->
+    <div class="container">
+        <div class="navbar-card mb-4">
+            <div class="row g-4">
+                <!-- Home/Dashboard -->
+                <div class="col-md-3">
+                    <a href="index.html" class="text-decoration-none">
+                        <div class="nav-card home-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-house-medical"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">Dashboard</h6>
+                                    <small class="text-white-50">Return home</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Emergency -->
+                <div class="col-md-3">
+                    <a href="emergency-portal.html" class="text-decoration-none">
+                        <div class="nav-card emergency-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">Emergency</h6>
+                                    <small class="text-white-50">Quick SOS</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- First Aid -->
+                <div class="col-md-3">
+                    <a href="firstaid.html" class="text-decoration-none">
+                        <div class="nav-card firstaid-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-notes-medical"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">First Aid</h6>
+                                    <small class="text-white-50">Quick guide</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Hospitals -->
+                <div class="col-md-3">
+                    <a href="hospital-locator.html" class="text-decoration-none">
+                        <div class="nav-card hospital-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-hospital-user"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">Hospitals</h6>
+                                    <small class="text-white-50">Find nearby</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -181,26 +242,31 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card p-4 mb-4">
-                    <h2 class="text-center mb-4">
-                        <i class="fas fa-stethoscope me-2"></i>
-                        Symptom Checker
-                    </h2>
-                    <p class="text-center mb-4">Enter your symptoms to receive first-aid advice and understand potential risks.</p>
+                <div class="main-card mb-4">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-stethoscope feature-icon"></i>
+                        <h2 class="mb-3">Symptom Checker</h2>
+                        <p class="text-white-50">Get instant health insights and recommendations based on your symptoms</p>
+                    </div>
                     
                     <form id="symptomForm">
                         <div class="mb-4 position-relative">
-                            <label for="symptoms" class="form-label">
-                                <i class="fas fa-search me-2"></i>
-                                Search Symptoms:
+                            <label for="symptoms" class="form-label d-flex align-items-center mb-3">
+                                <i class="fas fa-search me-2 text-primary"></i>
+                                Describe your symptoms
                             </label>
-                            <input type="text" class="form-control" id="symptoms" placeholder="Type to search symptoms...">
+                            <input type="text" 
+                                   class="form-control symptom-search" 
+                                   id="symptoms" 
+                                   placeholder="Start typing your symptoms (e.g., headache, fever)...">
                             <div id="suggestionBox" class="suggestions d-none"></div>
                         </div>
-                        <div id="selectedSymptoms" class="mb-3"></div>
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-check-circle me-2"></i>
-                            Check Symptoms
+                        
+                        <div id="selectedSymptoms" class="mb-4"></div>
+                        
+                        <button type="submit" class="btn check-symptoms-btn w-100">
+                            <i class="fas fa-heartbeat me-2"></i>
+                            Analyze Symptoms
                         </button>
                     </form>
                 </div>

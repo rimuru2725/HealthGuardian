@@ -5,8 +5,12 @@ self.addEventListener('install', (event) => {
             return cache.addAll([
                 '/',
                 '/emergency-portal.html',
-                '/emergency-portal.js',
-                // Add other resources you want to cache
+                '/js/emergency-portal.js',
+                '/firstaid.html',
+                '/js/firstaid.js',
+                'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+                'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css',
+                'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js'
             ]);
         })
     );
