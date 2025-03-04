@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records | HealthGuardian</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2196F3;
+            --secondary-color: #1976D2;
+            --dark-bg: #0a0a0a;
+            --card-bg: #151515;
+            --nav-bg: #111111;
+            --accent-blue: #0d6efd;
+            --accent-red: #dc3545;
+            --accent-green: #198754;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .navbar-card {
+            background: var(--nav-bg);
+            border-radius: 20px;
+            margin: 1rem;
+            padding: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-card {
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border-radius: 15px;
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--hover-color, #0d6efd);
+        }
+
+        .nav-card:hover::before {
+            opacity: 1;
+        }
+
+        .nav-card.home-card { --hover-color: var(--accent-blue); }
+        .nav-card.emergency-card { --hover-color: var(--accent-red); }
+        .nav-card.hospital-card { --hover-color: var(--accent-green); }
+
+        .nav-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .nav-card:hover .nav-icon {
+            transform: scale(1.1);
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            color: #f8f9fa;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control::placeholder {
+            color: #b0b0b0;
+            opacity: 1;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(33, 150, 243, 0.1);
+            color: #fff;
+        }
+
+        .btn-action {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 15px;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #c82333);
+        }
+
+        .records-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .record-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .record-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: rgba(33, 150, 243, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .tab-switcher {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 0.3rem;
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .tab-btn.active {
+            background: rgba(33, 150, 243, 0.2);
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .view-report-btn {
+            display: inline-block;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            padding: 0.3rem 0.8rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .view-report-btn:hover {
+            background: rgba(33, 150, 243, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .blood-group-badge {
+            display: inline-block;
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        #logout-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        #logout-btn:hover {
+            background: rgba(220, 53, 69, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .notification {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s;
+            max-width: 350px;
+        }
+
+        .notification-success {
+            border-left: 4px solid #198754;
+        }
+
+        .notification-error {
+            border-left: 4px solid #dc3545;
+        }
+
+        .notification-info {
+            border-left: 4px solid #0dcaf0;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-content i {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: rgba(33, 150, 243, 0.2);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item-content {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-item-content time {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item-content .circle {
+            background-color: var(--primary-color);
+            border: 3px solid var(--card-bg);
+            border-radius: 50%;
+            position: absolute;
+            top: calc(50% - 10px);
+            right: -40px;
+            width: 20px;
+            height: 20px;
+            z-index: 100;
+        }
+
+        .timeline-item:nth-child(even) .circle {
+            right: auto;
+            left: -40px;
+        }
+
+        .hospital-event {
+            background-color: var(--accent-red);
+        }
+
+        .vaccine-event {
+            background-color: var(--accent-green);
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+
+        .stat-details h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-details p {
+            margin-bottom: 0;
+            opacity: 0.7;
+        }
+
+        .view-details-btn, .edit-record-btn, .delete-record-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 5px;
+        }
+
+        .detail-section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .detail-content {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .record-detail-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .blood-group-badge.larger {
+            font-size: 1rem;
+            padding: 0.3rem 0.8rem;
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-filter-container .form-control {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Navigation -->
+    <div class="container">
+        <div class="navbar-card mb-4">
+            <div class="row g-4">
+                <!-- Home/Dashboard -->
+                <div class="col-md-3">
+                    <a href="index.html" class="text-decoration-none">
+                        <div class="nav-card home-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-house-medical"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">Dashboard</h6>
+                                    <small class="text-white-50">Return home</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Emergency -->
+                <div class="col-md-3">
+                    <a href="emergency-portal.html" class="text-decoration-none">
+                        <div class="nav-card emergency-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-ambulance"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">Emergency</h6>
+                                    <small class="text-white-50">Quick SOS</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- First Aid -->
+                <div class="col-md-3">
+                    <a href="firstaid.html" class="text-decoration-none">
+                        <div class="nav-card firstaid-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-notes-medical"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">First Aid</h6>
+                                    <small class="text-white-50">Quick guide</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Hospitals -->
+                <div class="col-md-3">
+                    <a href="hospital-locator.html" class="text-decoration-none">
+                        <div class="nav-card hospital-card p-3">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="fas fa-hospital-user"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 text-white">Hospitals</h6>
+                                    <small class="text-white-50">Find nearby</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <!-- Authentication Section -->
+                <div id="auth-section" class="main-card position-relative">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-file-medical feature-icon"></i>
+                        <h2 class="mb-3">Medical Records Portal</h2>
+                        <p class="text-white-50">Securely access and manage your health information</p>
+                    </div>
+
+                    <div class="tab-switcher">
+                        <div class="tab-btn active" id="login-tab">Login</div>
+                        <div class="tab-btn" id="register-tab">Register</div>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <div id="login-form" class="auth-card">
+                        <div class="mb-3">
+                            <label for="login-username" class="form-label">
+                                <i class="fas fa-user"></i>Username
+                            </label>
+                            <input type="text" class="form-control" id="login-username" placeholder="Enter your username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="login-password" class="form-label">
+                                <i class="fas fa-lock"></i>Password
+                            </label>
+                            <input type="password" class="form-control" id="login-password" placeholder="Enter your password">
+                        </div>
+                        <button id="login-btn" onclick="login()" class="btn btn-action">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </div>
+                    
+                    <!-- Register Form -->
+                    <div id="register-form" class="auth-card" style="display: none;">
+                        <div class="mb-3">
+                            <label for="reg-username" class="form-label">
+                                <i class="fas fa-user-plus"></i>Choose Username
+                            </label>
+                            <input type="text" class="form-control" id="reg-username" placeholder="Create a username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="reg-password" class="form-label">
+                                <i class="fas fa-key"></i>Choose Password
+                            </label>
+                            <input type="password" class="form-control" id="reg-password" placeholder="Create a password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="reg-confirm-password" class="form-label">
+                                <i class="fas fa-key"></i>Confirm Password
+                            </label>
+                            <input type="password" class="form-control" id="reg-confirm-password" placeholder="Confirm your password">
+                        </div>
+                        <button id="register-btn" onclick="register()" class="btn btn-action">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Medical Records Section -->
+                <div id="records-section" style="display: none;">
+                    <button id="logout-btn" onclick="logout()" title="Logout">
+                        <i class="fas fa-sign-out-alt text-danger"></i>
+                    </button>
+                    
+                    <!-- Search and Filter Section -->
+                    <div class="search-filter-container">
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control" id="search-records" placeholder="Search records...">
+                        </div>
+                        <div>
+                            <select class="form-control" id="filter-type">
+                                <option value="">All Records</option>
+                                <option value="allergies">With Allergies</option>
+                                <option value="medications">On Medications</option>
+                                <option value="chronic">Chronic Conditions</option>
+                                <option value="appointments">Upcoming Appointments</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="applyFilters()">
+                                <i class="fas fa-filter me-2"></i>Filter
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Records List Card -->
+                    <div class="main-card">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <h3 class="mb-2"><i class="fas fa-clipboard-list me-2 text-primary"></i>Your Medical Records</h3>
+                                <p class="text-white-50 mb-0">All your health data in one secure place</p>
+                            </div>
+                            <button onclick="fetchRecords()" class="btn btn-sm btn-action" style="width: auto;">
+                                <i class="fas fa-sync-alt me-2"></i>Refresh
+                            </button>
+                        </div>
+                        
+                        <ul id="records-list" class="records-list"></ul>
+                        <div id="dashboard-stats" class="mt-4 mb-4"></div>
+                        <div id="medical-timeline" class="mt-4"></div>
+                    </div>
+                    
+                    <!-- Add New Record Card -->
+                    <div class="main-card">
+                        <h3 id="edit-form-title" class="mb-3"><i class="fas fa-plus-circle me-2 text-primary"></i>Add New Medical Record</h3>
+                        
+                        <form id="record-form">
+                            <input type="hidden" id="recordId" name="recordId">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="full_name" class="form-label">
+                                            <i class="fas fa-user-circle"></i>Full Name
+                                        </label>
+                                        <input type="text" class="form-control" id="full_name" placeholder="Enter patient name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="dob" class="form-label">
+                                            <i class="fas fa-calendar-alt"></i>Date of Birth
+                                        </label>
+                                        <input type="date" class="form-control" id="dob">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="blood_group" class="form-label">
+                                    <i class="fas fa-tint"></i>Blood Group
+                                </label>
+                                <select class="form-control" id="blood_group">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="emergency_contact" class="form-label">
+                                    <i class="fas fa-phone"></i>Emergency Contact
+                                </label>
+                                <input type="text" class="form-control" id="emergency_contact" placeholder="Emergency contact number">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="allergies" class="form-label">
+                                            <i class="fas fa-allergies"></i>Allergies
+                                        </label>
+                                        <textarea class="form-control" id="allergies" rows="3" placeholder="List any allergies"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="chronic_diseases" class="form-label">
+                                            <i class="fas fa-heartbeat"></i>Chronic Diseases
+                                        </label>
+                                        <textarea class="form-control" id="chronic_diseases" rows="3" placeholder="List any chronic conditions"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="current_medications" class="form-label">
+                                            <i class="fas fa-pills"></i>Current Medications
+                                        </label>
+                                        <textarea class="form-control" id="current_medications" rows="3" placeholder="List current medications"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="prescriptions" class="form-label">
+                                            <i class="fas fa-prescription"></i>Prescriptions
+                                        </label>
+                                        <textarea class="form-control" id="prescriptions" rows="3" placeholder="List prescriptions"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="previous_diagnoses" class="form-label">
+                                            <i class="fas fa-stethoscope"></i>Previous Diagnoses
+                                        </label>
+                                        <textarea class="form-control" id="previous_diagnoses" rows="3" placeholder="List previous diagnoses"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="vaccination_records" class="form-label">
+                                            <i class="fas fa-syringe"></i>Vaccination Records
+                                        </label>
+                                        <textarea class="form-control" id="vaccination_records" rows="3" placeholder="List vaccination history"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="upcoming_appointments" class="form-label">
+                                            <i class="fas fa-calendar-check"></i>Upcoming Appointments
+                                        </label>
+                                        <textarea class="form-control" id="upcoming_appointments" rows="3" placeholder="List upcoming appointments"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="hospitalization_history" class="form-label">
+                                            <i class="fas fa-hospital"></i>Hospitalization History
+                                        </label>
+                                        <textarea class="form-control" id="hospitalization_history" rows="3" placeholder="List hospitalization history"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="health_tracking_notes" class="form-label">
+                                    <i class="fas fa-notes-medical"></i>Health Tracking Notes
+                                </label>
+                                <textarea class="form-control" id="health_tracking_notes" rows="3" placeholder="Additional health notes"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-file-medical"></i>Medical Report
+                                </label>
+                                <div class="file-upload-area" onclick="document.getElementById('medical_report').click()">
+                                    <i class="fas fa-cloud-upload-alt mb-2" style="font-size: 2rem; color: var(--primary-color);"></i>
+                                    <p class="mb-0">Click to upload your medical report</p>
+                                    <input type="file" id="medical_report" style="display: none;">
+                                    <p id="selected-file" class="text-primary mt-2 mb-0" style="display: none;"></p>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-action">
+                                <i class="fas fa-save me-2"></i>Save Medical Record
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Tab switching
+        document.getElementById('login-tab').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('register-tab').classList.remove('active');
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        });
+        
+        document.getElementById('register-tab').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('login-tab').classList.remove('active');
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        });
+        
+        // Show selected file name
+        document.getElementById('medical_report').addEventListener('change', function() {
+            const fileName = this.files[0]?.name;
+            if (fileName) {
+                document.getElementById('selected-file').textContent = fileName;
+                document.getElementById('selected-file').style.display = 'block';
+            } else {
+                document.getElementById('selected-file').style.display = 'none';
+            }
+        });
+        
+        // Override fetchRecords to use enhanced display
+        const originalFetchRecords = window.fetchRecords;
+        window.fetchRecords = async function() {
+            try {
+                // Call the original function
+                await originalFetchRecords();
+                
+                // Check if the records list is empty
+                const recordsList = document.getElementById("records-list");
+                if (recordsList.innerHTML === "<p>No medical records found.</p>") {
+                    return; // Keep original message
+                }
+                
+                // If records exist, update the HTML for better styling
+                const listItems = recordsList.querySelectorAll('li');
+                listItems.forEach(item => {
+                    // Extract the data
+                    const content = item.innerHTML;
+                    const name = content.match(/<strong>(.*?)<\/strong>/)[1];
+                    const bloodGroup = content.match(/- (.*?)<br>/)[1];
+                    const dob = content.match(/DOB: (.*?)(<br>|$)/)[1];
+                    const reportLink = content.includes('View Report') ? 
+                        content.match(/<a href="(.*?)".*?>(.*?)<\/a>/)[0] : '';
+                    
+                    // Replace with enhanced HTML
+                    item.className = 'record-item';
+                    item.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">${name} <span class="blood-group-badge">${bloodGroup}</span></h5>
+                                <p class="mb-1"><i class="fas fa-calendar-day text-primary me-2"></i>Born: ${dob}</p>
+                            </div>
+                            <div>
+                                ${reportLink ? reportLink.replace('View Report', '<i class="fas fa-file-pdf me-1"></i>View Report').replace('href=', 'class="view-report-btn" href=') : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error enhancing records display:", error);
+            }
+        };
+
+        function applyFilters() {
+            fetchRecords();
+        }
+    </script>
+    <script src="./js/medical-history.js"></script>
+</body>
+</html>
+

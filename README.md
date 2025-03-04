@@ -1,183 +1,217 @@
-<!-- Animated Header -->
-<div align="center">
+# 🏥 HealthGuardian: Your Personal Health Companion 🚑
 
-# HealthGuardian <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/heart-pulse.svg" width="32" height="32" alt="HealthGuardian Logo">
+![Project Banner](./screenshots/index.png)
 
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![OpenStreetMap](https://img.shields.io/badge/OpenStreetMap-7EBC6F?style=for-the-badge&logo=openstreetmap&logoColor=white)](https://www.openstreetmap.org/)
+## 🌈 Project Vision
 
-_Your AI-Powered Emergency Healthcare Companion_
+HealthGuardian is not just an app—it's a comprehensive **digital health guardian** designed to be your instant lifeline in medical emergencies, personal health tracking, and proactive wellness management.
 
 
-</div>
+## 🌟 Features
 
-## 🌟 Overview
-
-HealthGuardian is your trusted companion in medical emergencies, providing instant access to critical healthcare resources, AI-powered symptom analysis, and real-time emergency assistance. Our platform combines cutting-edge technology with medical expertise to ensure help is always within reach.
-
-## 🚨 Emergency Features
-
-<div align="center">
-
-| Feature | Description | Response Time |
-|---------|-------------|---------------|
-| 🆘 **SOS Alert** | One-tap emergency contact notification | < 30 seconds |
-| 🏥 **Hospital Finder** | Real-time nearest hospital locator | < 5 seconds |
-| 🩺 **Symptom Checker** | AI-powered preliminary diagnosis | < 1 minute |
-| 🚑 **Emergency Guide** | Interactive first-aid instructions | Instant |
-</div>
-
-## 🎯 Core Capabilities
-
-### Emergency Response Flow
-```mermaid
-graph TD
-    A[Emergency Detected] -->|SOS Activated| B[Contact Alert]
-    B --> C[Location Services]
-    C --> D[Hospital Mapping]
-    D --> E[Route Guidance]
-    A -->|Parallel Process| F[First Aid Guide]
-    style A fill:#ff6b6b,stroke:#333
-    style E fill:#51cf66,stroke:#333
-    style F fill:#339af0,stroke:#333
-```
-
-### Hospital Locator System
-<div align="center">
-
-| Feature | Range | Details |
-|---------|-------|----------|
-| 🗺️ **Radius Search** | 5km | Real-time hospital availability |
-| 🚗 **Route Planning** | Dynamic | Traffic-aware pathfinding |
-| 📞 **Quick Contact** | Instant | One-tap emergency dialing |
-| 🏥 **Facility Info** | Detailed | Services & specializations |
-
-</div>
-
-## 💉 Medical Features
-
-### Symptom Analysis
-- **AI-Powered Assessment**
-  - Rapid symptom evaluation
-  - Risk level classification
-  - Treatment recommendations
-  - Emergency action plans
-
-### First Aid Guidance
-- **Interactive Instructions**
-  - Step-by-step procedures
-  - Visual demonstrations
-  - Voice-guided assistance
-  - Emergency protocols
-
-## 📱 Application Interface
-
-<div align="center">
-
-### 🏠 Home Dashboard
-<img src="screenshots/home.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-
-### 🔍 Symptom Checker
-<img src="screenshots/symptom.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+### 🆘 Emergency SOS
+- Send emergency **SOS messages** with **real-time location** via **Twilio API**.
+- Stores **permanent emergency contacts** (Police, Ambulance, Fire).
+- **Offline support** for quick emergency response.
 
 ### 🏥 Hospital Locator
-<img src="screenshots/hospital.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+- Uses **OpenStreetMap & Leaflet.js** to find **nearby hospitals**.
+- **Live GPS tracking** to get the nearest hospital.
+- **Route guidance & distance calculation**.
 
-### 🚨 Emergency Portal
-<img src="screenshots/emergency.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+### 🔍 Symptom Checker
+- **Auto-suggestion for symptoms** (e.g., fever, chest pain, dizziness).
+- Provides **first aid suggestions and potential risks**.
+- Smart **risk analysis for critical symptoms**.
 
-### 🩹 First Aid Guide
-<img src="screenshots/firstaid.png" width="600" style="border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+### 🚑 First Aid Guide
+- **Interactive medical instructions** (burns, fractures, heart attacks, etc.).
+- **Multi-language support**.
+- Bookmark and **recently viewed** guides stored in **localStorage**.
 
-</div>
+### 📁 Medical Records Management **(NEW!)**
+- **Securely stores** medical history, allergies, prescriptions.
+- **AES-256 encryption** for sensitive medical data.
+- **JWT-based authentication** for access control.
+- Upload and manage **medical reports (PDF, JPG, PNG)**.
+- **Export medical records to PDF**.
+- **Share records securely** via email.
 
-## 🛠️ Technology Architecture
-
-<div align="center">
-
-| Layer | Technologies |
-|-------|--------------|
-| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=flat-square&logo=bootstrap&logoColor=white) |
-| **Backend** | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white) |
-| **APIs** | ![Twilio](https://img.shields.io/badge/Twilio-F22F46?style=flat-square&logo=twilio&logoColor=white) ![OpenStreetMap](https://img.shields.io/badge/OpenStreetMap-7EBC6F?style=flat-square&logo=openstreetmap&logoColor=white) |
-
-
-</div>
-
-## 🚀 Quick Setup
-
-1. **Clone & Install**
-```bash
-git clone https://github.com/yourusername/HealthGuardian.git
-cd HealthGuardian
-npm install
-```
-
-2. **Configure Environment**
-```bash
-# Create .env file with your credentials
-TWILIO_ACCOUNT_SID=your_sid
-TWILIO_AUTH_TOKEN=your_token
-EMERGENCY_CONTACT=emergency_number
-```
-
-3. **Launch Application**
-```bash
-npm start
-```
-
-## 🔮 Future Enhancements
-
-<div align="center">
-
-| Feature | Priority | Status |
-|---------|----------|---------|
-| 🧬 **AI Diagnosis Enhancement** | High | Planning |
-| 📱 **Mobile App Development** | High | In Progress |
-| 🌐 **Multi-language Support** | Medium | Planning |
-| 🤖 **Voice Assistant Integration** | Medium | Research |
-| 🏥 **Hospital Partnership API** | High | Planning |
-
-</div>
-
-## 🤝 Contributing
-
-We welcome healthcare professionals and developers! Here's how to contribute:
-
-1. 🍴 Fork the repository
-2. 🌿 Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. 💊 Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. 📤 Push to the branch (`git push origin feature/AmazingFeature`)
-5. 🎯 Open a Pull Request
-
-## 📧 Support & Contact
-
-<div align="center">
-
-| Channel | Details |
-|---------|----------|
-| 📧 **Email** | [vivek27082005@gmail.com](mailto:vivek27082005@gmail.com) |
-
-
-</div>
-
-## ⚖️ License & Compliance
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-### Medical Disclaimer
-The information provided by HealthGuardian is for general informational purposes only. Always seek professional medical advice for serious conditions.
+### 📌 Additional Features
+- **Progressive Web App (PWA)** for **offline functionality**.
+- **Dark mode & Mobile-friendly UI**.
+- **Rate-limiting & security** to prevent attacks.
 
 ---
 
-<div align="center">
+## 🚀 Enhanced Tech Stack & Innovations
 
-**Saving Lives Through Technology**
+### 🌐 Frontend Powerhouse
+- **UI/UX Framework**
+  * **Responsive Design**: HTML5, CSS3, Bootstrap
+  * **Interactive Logic**: Vanilla JavaScript (ES6+)
+  * **Mapping**: Leaflet.js with OpenStreetMap
+  * **Offline Capabilities**: Progressive Web App (PWA)
+  * **State Management**: Redux for complex interactions
 
-[⬆ Back to Repo](https://github.com/rimuru2725/HealthGuardian/blob/main/README.md)
+### ⚙️ Backend Ecosystem
+- **Server-Side Architecture**
+  * **Runtime**: Node.js with Express.js
+  * **API Integration**: 
+    - Twilio for Emergency SMS
+    - Stripe for Premium Features
+    - SendGrid for Secure Communications
+  * **File Handling**: 
+    - Multer.js for medical report uploads
+    - Sharp.js for image processing
+  * **Security Suite**:
+    - PDFKit for medical record exports
+    - CryptoJS (AES-256 Encryption)
+    - Helmet.js for HTTP security
+    - Rate-limiting middleware
 
-<sub>Developed with ❤️ by Vivek | Powered by AI for Emergency Care</sub>
+### 🗄️ Database & Authentication
+- **Data Management**
+  * **Primary Database**: SQLite
+  * **Scalable Options**: 
+    - MongoDB for document-based storage
+    - PostgreSQL for relational data
+  * **Authentication**: 
+    - JWT (JSON Web Tokens)
+    - OAuth 2.0 integration
+    - Two-factor authentication
 
-</div>
+## 🌟 Groundbreaking Features
+
+### 🆘 Advanced Emergency SOS
+- **Multi-Channel Emergency Alerts**
+  * SMS via Twilio
+  * Email notifications
+  * Location-based emergency service dispatch
+- **Intelligent Contact Management**
+  * Prioritized emergency contacts
+  * Automatic location sharing
+  * Offline emergency mode
+
+### 🏥 Intelligent Hospital Locator
+- **Smart Navigation**
+  * Real-time GPS tracking
+  * Hospital rating and specialization filters
+  * Wait time estimations
+  * Ambulance availability indicators
+- **Route Optimization**
+  * Fastest route calculation
+  * Traffic-aware routing
+  * Public transit options
+
+---
+
+## 📸 Screenshots
+### 🔹 Home Page
+![Home Page](screenshots/home.png)
+
+### 🔹 Emergency SOS Feature
+![Emergency SOS](screenshots/emergency.png)
+
+### 🔹 Hospital Locator
+![Hospital Locator](screenshots/hospital.png)
+
+### 🔹 Symptom Checking
+![Medical Records](screenshots/symptom.png)
+
+### 🔹 FirstAid Information DashBoard
+![Medical Records](screenshots/firstaid1.png)
+
+### 🔹 FirstAid Information
+![Medical Records](screenshots/firstaid.png)
+
+### 🔹 Medical Records Login
+![Medical Records](screenshots/medical_records_login.png)
+
+### 🔹 Medical Records Register
+![Medical Records](screenshots/medical_records_register.png)
+
+### 🔹 Medical Records Dashboard
+![Medical Records](screenshots/medical_records1.png)
+
+### 🔹 Medical Records Add
+![Medical Records](screenshots/medical_records_add.png)
+
+
+---
+
+## 🛠️ Installation & Setup
+
+### 1️⃣ Clone Repository
+```sh
+git clone https://github.com/yourusername/HealthGuardian.git
+cd HealthGuardian
+```
+
+### 2️⃣ Install Dependencies
+```sh
+npm install
+```
+
+### 3️⃣ Set Up Environment Variables
+Create a `.env` file in the root directory and configure the following:
+```env
+PORT=3000
+JWT_SECRET=your_secret_key
+TOKEN_EXPIRY=1h
+TWILIO_SID=your_twilio_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_PHONE=your_twilio_phone_number
+ENCRYPTION_KEY=your_encryption_key
+```
+
+### 4️⃣ Start the Server
+```sh
+npm start
+```
+Server will run on `http://localhost:3000`
+
+---
+
+## 🗄️ Database Setup
+This project uses **SQLite** (default) but can be switched to **MongoDB** or **PostgreSQL**.
+
+### Initialize SQLite Database
+```sh
+node database.js
+```
+
+For **MongoDB**, update `database.js` with MongoDB connection settings.
+
+---
+
+## 🚀 Deployment
+### **Render (Recommended)**
+1. Push the project to **GitHub**.
+2. Connect repository to **Render.com**.
+3. Add environment variables in Render settings.
+4. Deploy & get live URL!
+
+---
+
+## 🤝 Contributing
+- Fork this repository.
+- Create a new branch (`feature-xyz`).
+- Commit changes and push.
+- Open a **pull request**!
+
+---
+
+## 📜 License
+This project is licensed under the **MIT License**.
+
+---
+
+## 📧 Contact
+- For support, contact: **vikysharma644@gmail.com**.
+- Explore my portfolio at **https://rimuru2725.github.io**
+
+
+---
+
+## ❤️ Built with passion for global health accessibility

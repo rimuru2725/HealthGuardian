@@ -2,10 +2,21 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+const bodyParser = require("body-parser");
+const authRoutes = require("./database/auth");
+const medicalRecordsRoutes = require("./database/medicalRecords"); // Import auth routes
+require("dotenv").config();
+ // Use authentication routes
+
 
 const app = express();
 const port = 3000;
+
+app.use(bodyParser.json());
+app.use("/auth", authRoutes);
+app.use("/medical-records", medicalRecordsRoutes);
+app.use("/uploads", express.static("uploads"));
+
 
 // Your Twilio credentials
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -58,6 +69,11 @@ app.post('/api/send-sos', async (req, res) => {
         });
     }
 });
+
+app.get("/medical-history", (req, res) => {
+    res.sendFile(__dirname + "/public/medical-history.html");
+});
+
 
 // Error handling for undefined routes
 app.use((req, res) => {

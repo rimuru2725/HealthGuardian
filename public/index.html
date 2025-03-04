@@ -14,6 +14,7 @@
             --accent-blue: #0d6efd;
             --accent-red: #dc3545;
             --accent-green: #198754;
+            --accent-purple: #6f42c1;
         }
 
         body {
@@ -46,6 +47,7 @@
         .hospital-card { --hover-color: var(--accent-blue); }
         .firstaid-card { --hover-color: var(--accent-green); }
         .symptom-card { --hover-color: var(--accent-blue); }
+        .medical-history-card { --hover-color: var(--accent-purple); }
 
         .feature-icon {
             font-size: 2.5rem;
@@ -88,7 +90,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
                     <h1 class="display-4 fw-bold mb-4">Your Personal Health Guardian</h1>
-                    <p class="lead mb-4">24/7 emergency assistance, hospital locator, and instant medical guidance at your fingertips.</p>
+                    <p class="lead mb-4">Comprehensive health management, emergency support, and personal medical tracking.</p>
                     <a href="emergency-portal.html" class="btn btn-danger btn-lg pulse-animation">
                         <i class="bi bi-heart-pulse-fill me-2"></i>Emergency Assistance
                     </a>
@@ -170,12 +172,28 @@
                 <div class="col-lg-6">
                     <a href="symptom-checker.html" class="text-decoration-none">
                         <div class="feature-card symptom-card h-100 p-4">
-                            <i class="fas fa-stethoscope feature-icon"></i>;
+                            <i class="fas fa-stethoscope feature-icon text-info"></i>
                             <h3 class="text-white">Symptom Checker</h3>
                             <p class="text-white-50">Advanced symptom analysis with AI-powered health recommendations and risk assessment.</p>
                             <div class="mt-3">
                                 <span class="badge bg-info me-2">AI Powered</span>
                                 <span class="badge bg-info">Quick Analysis</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Medical History Card (New Feature) -->
+                <div class="col-lg-12">
+                    <a href="medical-history.html" class="text-decoration-none">
+                        <div class="feature-card medical-history-card h-100 p-4">
+                            <i class="bi bi-journal-medical feature-icon text-purple"></i>
+                            <h3 class="text-white">Medical History Manager</h3>
+                            <p class="text-white-50">Securely store, manage, and share your comprehensive medical records with advanced privacy controls and easy export options.</p>
+                            <div class="mt-3">
+                                <span class="badge bg-purple me-2">Secure Storage</span>
+                                <span class="badge bg-purple">Easy Sharing</span>
+                                <span class="badge bg-purple">Privacy Protected</span>
                             </div>
                         </div>
                     </a>
