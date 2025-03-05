@@ -1,4 +1,3 @@
-// Global variables
 let map, userLat, userLon;
 let hospitals = [];
 let routingControl = null;
@@ -51,6 +50,7 @@ function getUserLocation() {
     }
 }
 
+
 // Fetch nearby hospitals using Overpass API
 function fetchHospitals() {
     const radius = 5000; // 5km radius
@@ -92,7 +92,6 @@ function fetchHospitals() {
             alert('Error fetching nearby hospitals. Please try again later.');
         });
 }
-
 // Add hospital marker to map
 function addHospitalMarker(hospital) {
     const hospitalIcon = L.icon({
@@ -113,6 +112,8 @@ function addHospitalMarker(hospital) {
     });
 }
 
+
+
 // Create popup content for hospital marker
 function createPopupContent(hospital) {
     return `
@@ -129,43 +130,24 @@ function createPopupContent(hospital) {
 }
 
 // Show directions to selected hospital
-function showDirections(hospital, fromPopup = false) {
-    if (routingControl) {
-        map.removeControl(routingControl);
-    }
-
-    routingControl = L.Routing.control({
-        waypoints: [
-            L.latLng(userLat, userLon),
-            L.latLng(hospital.lat, hospital.lon)
-        ],
-        routeWhileDragging: false,
-        lineOptions: {
-            styles: [{ color: '#00f', opacity: 0.7, weight: 6 }]
-        },
-        createMarker: () => { return null; },
-        showAlternatives: false,
-        fitSelectedRoutes: true
-    }).addTo(map);
-
-    if (fromPopup) {
-        const popup = L.popup()
-            .setLatLng([hospital.lat, hospital.lon])
-            .setContent(createPopupContent(hospital))
-            .openOn(map);
-    }
-
-    routingControl.on('routesfound', e => {
-        const route = e.routes[0];
-        const distance = (route.summary.totalDistance / 1000).toFixed(1);
-        const time = Math.round(route.summary.totalTime / 60);
-        
-        updateDirectionsPanel(hospital.name, distance, time, route.instructions);
-    });
-}
-
+// Show directions to selected hospital
 // Update the directions panel
-function updateDirectionsPanel(hospitalName, distance, time, instructions) {
+// Update the directions panel
+function updateDirectionsPanel(hospitalName, distance, time, route) {
+    // Safely extract steps from all legs
+    const allSteps = route.legs.flatMap(leg => 
+        leg.steps.map(step => {
+            // Safely handle undefined instructions
+            const instruction = step.maneuver.instruction || 'Continue';
+            
+            return {
+                instruction: instruction,
+                distance: step.distance > 0 ? (step.distance / 1000).toFixed(2) : 0, // Convert to kilometers
+                type: step.maneuver.type || 'unknown'
+            };
+        })
+    ).filter(step => step.instruction); // Remove any potentially empty steps
+    
     const directionsHtml = `
         <div class="hospital-info-card p-3">
             <div class="hospital-name">${hospitalName}</div>
@@ -173,12 +155,20 @@ function updateDirectionsPanel(hospitalName, distance, time, instructions) {
                 <div><i class="bi bi-geo-alt"></i> Distance: ${distance} km</div>
                 <div><i class="bi bi-clock"></i> Estimated Time: ${time} minutes</div>
             </div>
-            <div class="directions-steps">
-                ${instructions.map((instruction, index) => `
-                    <div class="direction-step">
-                        <small><strong>${index + 1}.</strong> ${instruction.text}</small>
+            <div class="directions-steps mt-3">
+                ${allSteps.slice(0, 10).map((step, index) => `
+                    <div class="direction-step mb-2">
+                        <div class="d-flex align-items-start">
+                            <span class="me-2 text-muted">${index + 1}.</span>
+                            <div>
+                                <small class="d-block text-white">${step.instruction}</small>
+                                ${step.distance > 0 ? 
+                                    `<small class="text-muted">Segment Distance: ${step.distance} km</small>` 
+                                    : ''}
+                            </div>
+                        </div>
                     </div>
-                `).join('')}
+                `).join('') || '<div class="text-muted">No detailed route steps available</div>'}
             </div>
         </div>
     `;
@@ -186,6 +176,92 @@ function updateDirectionsPanel(hospitalName, distance, time, instructions) {
     document.getElementById('hospitalList').innerHTML = directionsHtml;
 }
 
+// Show directions to selected hospital
+function showDirections(hospital, fromPopup = false) {
+    // Remove existing routing control if it exists
+    if (routingControl) {
+        map.removeControl(routingControl);
+    }
+
+    // Use a more reliable OSRM service or self-hosted routing server
+    const osrmServiceUrl = 'https://router.project-osrm.org/route/v1/driving/';
+    
+    // Construct the OSRM routing URL with detailed steps
+    const routeUrl = `${osrmServiceUrl}${userLon},${userLat};${hospital.lon},${hospital.lat}?overview=full&geometries=geojson&steps=true&annotations=true`;
+
+    fetch(routeUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Routing request failed');
+            }
+            return response.json();
+        })
+        .then(routeData => {
+            // Check if routes exist
+            if (routeData.routes && routeData.routes.length > 0) {
+                const route = routeData.routes[0];
+                const distance = (route.distance / 1000).toFixed(1); // Convert to kilometers
+                const duration = Math.round(route.duration / 60); // Convert to minutes
+
+                // Draw the route on the map
+                const routeCoordinates = route.geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                const routeLine = L.polyline(routeCoordinates, {
+                    color: 'blue',
+                    weight: 5,
+                    opacity: 0.7
+                }).addTo(map);
+
+                // Fit the map to the route
+                map.fitBounds(routeLine.getBounds());
+
+                // Debugging: Log route data to console
+                console.log('Route Data:', route);
+
+                // Update directions panel
+                updateDirectionsPanel(hospital.name, distance, duration, route);
+
+                if (fromPopup) {
+                    const popup = L.popup()
+                        .setLatLng([hospital.lat, hospital.lon])
+                        .setContent(createPopupContent(hospital))
+                        .openOn(map);
+                }
+            } else {
+                throw new Error('No route found');
+            }
+        })
+        .catch(error => {
+            console.error('Routing error:', error);
+            
+            // Fallback to simple distance calculation
+            const distance = calculateDistance(userLat, userLon, hospital.lat, hospital.lon).toFixed(1);
+            const directionsHtml = `
+                <div class="hospital-info-card p-3">
+                    <div class="hospital-name text-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Routing Unavailable
+                    </div>
+                    <div class="directions-summary">
+                        <div><i class="bi bi-geo-alt"></i> Direct Distance: ${distance} km</div>
+                        <small class="text-muted">Detailed routing could not be retrieved.</small>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('hospitalList').innerHTML = directionsHtml;
+
+            // Draw a simple line between user and hospital
+            L.polyline([
+                [userLat, userLon],
+                [hospital.lat, hospital.lon]
+            ], {
+                color: 'red',
+                weight: 2,
+                opacity: 0.5,
+                dashArray: '5, 10'
+            }).addTo(map);
+        });
+}
 // Find nearest hospital
 // Find nearest hospital
 function findNearestHospital() {
